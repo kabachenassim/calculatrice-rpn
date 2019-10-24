@@ -7,43 +7,65 @@ import exception.intervalle;
 
 public class MoteurRPN {
 
-	private Stack<Double> pile;
+	Stack<Double> p = new Stack<Double> ();
+	private final static int min_value=-999;
+	private final static int max_value=999;
 	
-	private static final double MIN_VALUE = -1000;
-	private static final double MAX_VALUE =  1000;
-	
-	
-	public MoteurRPN() {
-		pile = new Stack<Double>();
+
+	public MoteurRPN() 
+	{
+		p=new Stack<>();
 	}
 	
-	public Double enregistreOperande(double val)throws intervalle{
-		if(Math.abs(val)>MAX_VALUE) throw new intervalle();
-		if(Math.abs(val)<MIN_VALUE) throw new intervalle();
-		return pile.push(val);
+	public void enregistrer(Double value)throws intervalle {
+		if (value> max_value || value< min_value)
+		throw new intervalle();
+		else
+		p.push(value);
 	}
+	
+	public void calcul(operation op) throws divisionparzero{	
+		double resultat = 0;
+			Double v = depile();
+			Double y = depile();
+			resultat = op.evaluation(v, y);
+			p.push(resultat);
+	}
+	
+	public boolean isEmpty() 
+	{
+		return p.empty();
 		
-	public Double calculeOperation(operation op)throws divisionparzero,intervalle{
-		return enregistreOperande(op.evaluation(pile.pop(), pile.pop()));
 	}
-
-	public boolean operationPossible(){
-		if(pile.size()>=2) return true;
-		else return false;
+	
+	public double depile() 
+	{	
+		if (p.isEmpty());
+		return p.pop() ;		  
 	}
-
-	public String specifieMinMaxValue(){
-		return "MIN_VALUE = " + MIN_VALUE + " et MAX_VALUE = " + MAX_VALUE + ".";
+	
+	public int nbrOperande()
+	{
+		return p.size();
+		
 	}
-
+	
+	public Stack<Double> getP() {
+		return p;
+	}
+	
 	public String listeOperandes(){
 		String string = "";
-		for(Double val: pile){
+		for(Double val: p){
 			string += val + " ";
 		}
 		return string;
 	}
 	
-	public Stack<Double> getPile(){
-		return this.pile;
-	}}
+	public boolean operationPossible(){
+		if(p.size()>=2) return true;
+		else return false;
+	}
+	
+	
+}

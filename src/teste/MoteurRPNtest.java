@@ -16,7 +16,7 @@ public class MoteurRPNtest {
 		
 		MoteurRPN r= new MoteurRPN();
 		Stack<Double> pile = null;
-	    r.enregistreOperande(1.0);
+	    r.enregistrer(1.0);
 		 
 		
 		
